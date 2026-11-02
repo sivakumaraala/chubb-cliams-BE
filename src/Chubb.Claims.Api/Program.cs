@@ -6,7 +6,6 @@ using Chubb.Claims.Application;
 using Chubb.Claims.Infrastructure;
 using Chubb.Claims.Persistence;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.Data.SqlClient;
 using Serilog;
 using Serilog.Context;
 
@@ -15,18 +14,9 @@ LoggingConfiguration.ResolveFilePaths(builder.Configuration, builder.Environment
 builder.Host.UseSerilog((context, services, log) => log.ReadFrom.Configuration(context.Configuration)
     .ReadFrom.Services(services));
 
-if (builder.Configuration.GetConnectionString("ClaimsDatabase") is null)
-{
-    var connection = new SqlConnectionStringBuilder
-    {
-        DataSource = "127.0.0.1,14333", InitialCatalog = "ChubbClaims", Encrypt = true,
-        TrustServerCertificate = true, ConnectTimeout = 5
-    };
-    var password = Environment.GetEnvironmentVariable("MSSQL_SA_PASSWORD");
-    if (!string.IsNullOrEmpty(password)) { connection.UserID = "sa"; connection.Password = password; }
-    else connection.IntegratedSecurity = true;
-    builder.Configuration["ConnectionStrings:ClaimsDatabase"] = connection.ConnectionString;
-}
+// Local Windows fallback also lets database-free host tests start without a connection secret.
+builder.Configuration["ConnectionStrings:ClaimsDatabase"] ??=
+    "Server=(localdb)\\MSSQLLocalDB;Database=ChubbClaims;Integrated Security=True;TrustServerCertificate=True";
 
 if (!builder.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("DemoIdentity:Enabled"))
     throw new InvalidOperationException("Demo identity can only be enabled in Development.");

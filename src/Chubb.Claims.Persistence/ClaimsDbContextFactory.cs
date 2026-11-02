@@ -9,7 +9,7 @@ public sealed class ClaimsDbContextFactory : IDesignTimeDbContextFactory<ClaimsD
     {
         // Creating migrations/scripts does not connect. Runtime configuration belongs to the API.
         var connection = Environment.GetEnvironmentVariable("ConnectionStrings__ClaimsDatabase")
-            ?? "Server=localhost,14333;Database=ChubbClaims;Integrated Security=True;TrustServerCertificate=True";
+            ?? "Server=(localdb)\\MSSQLLocalDB;Database=ChubbClaims;Integrated Security=True;TrustServerCertificate=True";
         return new ClaimsDbContext(new DbContextOptionsBuilder<ClaimsDbContext>().UseSqlServer(connection).Options);
     }
 }
