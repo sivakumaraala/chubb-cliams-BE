@@ -25,4 +25,6 @@ The previous Docker SQL Server data is not copied into LocalDB by this configura
 
 If LocalDB cannot start, inspect the Windows Application event log and `%LOCALAPPDATA%\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\error.log`. Do not delete the existing shared `MSSQLLocalDB` instance; it may contain other databases.
 
+If you created an empty `ChubbClaims` database in SSMS and the command-line application cannot connect to LocalDB, open `scripts/LocalDbMigration.sql` in SSMS, choose `ChubbClaims` in the query toolbar, and execute it. The script checks the selected database and applies all current EF migrations only if they are missing. Refresh **Databases > ChubbClaims > Tables** afterward. This creates the schema; the API adds the two demo seed claims on its first successful startup.
+
 Claims support motor, property, and illustrative travel submissions; officer assignment and decisions; owner-scoped tracking; information exchange; multiple recorded offline settlement payments; and a workload/exposure/decision-activity summary. An approved claim's reserve decreases as offline payments are recorded and reaches zero on settlement. This application never transfers funds. Kafka carries decision notifications through a transactional outbox and idempotent consumer.
