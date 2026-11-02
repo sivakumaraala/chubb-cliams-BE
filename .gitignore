@@ -1,0 +1,30 @@
+# Local credentials and per-machine configuration
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+
+# .NET build/test output
+**/bin/
+**/obj/
+**/TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Angular/Node output
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+
+# Editors and local logs
+.vs/
+.idea/
+*.user
+*.suo
+*.log
+logs/
+tmp/
+**/.tools/
